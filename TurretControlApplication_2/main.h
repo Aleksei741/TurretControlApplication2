@@ -2,6 +2,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#pragma warning(disable:4996)
 
 #include "resource.h"
 #include "wx/wxprec.h"
@@ -200,6 +201,7 @@ class TurretControlApp : public wxApp
     HWND hWnd;
 public:
     bool OnInit() override;
+
 };
 
 extern const char* gun_xpm[];

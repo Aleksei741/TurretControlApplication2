@@ -20,12 +20,56 @@ EVT_MENU(ID_MENU_FILE_LOAD_TURRET, MainFrame::ButtonEventLoadTurret)
 wxEND_EVENT_TABLE()
 
 //====================================================================================================
+// Название нашего пользовательского класса окна
+const char* CUSTOM_WINDOW_CLASS = "MyCustomWindowClass";
+//====================================================================================================
+// Функция для регистрации пользовательского класса окна
+void RegisterCustomWindowClass() {
+    WNDCLASSEX wc = {};
+    wc.cbSize = sizeof(WNDCLASSEX);
+    wc.lpfnWndProc = DefWindowProc; // Используем стандартную процедуру окна
+    wc.hInstance = GetModuleHandle(nullptr); // Дескриптор текущего приложения
+    wc.lpszClassName = wxT("MyCustomWindowClass"); // Имя класса окна
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1); // Цвет фона окна
+    wc.hCursor = LoadCursor(nullptr, IDC_ARROW); // Курсор по умолчанию
+
+    // Регистрируем класс окна
+    if (!RegisterClassEx(&wc)) {
+        wxMessageBox("Failed to register window class!", "Error", wxOK | wxICON_ERROR);
+    }
+}
+//====================================================================================================
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(nullptr, wxID_ANY, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
+    // Регистрируем пользовательский класс окна
+    RegisterCustomWindowClass();
+
+    // Создаем окно с использованием нашего класса
+    HWND hwnd = CreateWindowEx(
+        0,                      // Дополнительные стили окна
+        wxT("MyCustomWindowClass"),    // Имя класса окна
+        title.c_str(),          // Заголовок окна
+        WS_OVERLAPPEDWINDOW,    // Стиль окна
+        CW_USEDEFAULT, CW_USEDEFAULT, // Позиция окна
+        400, 300,               // Размер окна
+        nullptr,                // Родительское окно
+        nullptr,                // Меню
+        GetModuleHandle(nullptr), // Дескриптор приложения
+        nullptr                 // Дополнительные данные
+    );
+
+    if (!hwnd) {
+        wxMessageBox("Failed to create window!", "Error", wxOK | wxICON_ERROR);
+        return;
+    }
+
+    // Привязываем HWND к wxWidgets
+    AssociateHandle(hwnd);
+
     wxIcon ico = wxIcon(gun_xpm);
     SetIcon(ico);
-
+    
     CreateMenu();
     DrawingMainWindow();    
 
@@ -33,6 +77,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     InitVideo();
 }
+//====================================================================================================
 
 //====================================================================================================
 void MainFrame::DrawingMainWindow()

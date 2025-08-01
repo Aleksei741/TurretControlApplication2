@@ -88,6 +88,6 @@ public:
 	void InitVideo(void);
 	void SizeImgWindowCallback(int* w, int* h);
 	void DrawImgWindowCallback(unsigned char* RGB, int height, int width, int linesize);	
-	
+
 };
 #endif

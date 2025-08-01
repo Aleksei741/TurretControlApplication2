@@ -104,6 +104,21 @@ int VideoStreamProc::ReciveData_Procedure(void)
 int VideoStreamProc::DecodeH26X_Procedure(void)
 {
     RTPData_DType packet;
+
+    // Перебор всех кодеков
+    const AVCodec* pAVCodec_ = nullptr;
+    void* i = NULL;
+
+    // Установка уровня логирования
+    av_log_set_level(AV_LOG_INFO);
+
+    while ((pAVCodec_ = av_codec_iterate(&i)))
+    {
+        if (pAVCodec_->capabilities & AV_CODEC_CAP_HARDWARE)
+        {
+            av_log(nullptr, AV_LOG_INFO, "Hardware codec found: %s\n", pAVCodec_->name);
+        }
+    }
     
     if(codec == VSP_CODEC_H264)
         pAVCodec = avcodec_find_decoder(AV_CODEC_ID_H264);

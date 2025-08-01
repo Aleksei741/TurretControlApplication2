@@ -145,7 +145,7 @@ VideoOptionFrame::VideoOptionFrame(wxWindow* parent, void* VideoParam_)
 
 void VideoOptionFrame::OnClose(wxCloseEvent& event)
 {
-    MainFrame* parent = (MainFrame*)GetParent();
+    ParentFrame* parent = (ParentFrame*)GetParent();
     if (parent)
     {
         parent->frameVideoOption = nullptr;
@@ -204,13 +204,13 @@ void VideoOptionFrame::procCodec(wxCommandEvent& event)
 {
     int ID_select = combobxVideoH26X->GetSelection();
     VideoParam->H26X = static_cast<CodecH26X_DType>(ID_select);
-    MainFrame* parent = (MainFrame*)GetParent();
+    ParentFrame* parent = (ParentFrame*)GetParent();
     parent->InitVideo();
 }
 //====================================================================================================
 void VideoOptionFrame::procPort(wxSpinEvent& event)
 {
     VideoParam->port = spinOptionVideoPort->GetValue();
-    MainFrame* parent = (MainFrame*)GetParent();
+    ParentFrame* parent = (ParentFrame*)GetParent();
     parent->InitVideo();
 }

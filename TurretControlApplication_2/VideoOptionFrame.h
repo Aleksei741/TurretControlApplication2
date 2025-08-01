@@ -13,9 +13,12 @@
 #include <wx/mediactrl.h>
 #include <wx/spinctrl.h>
 
+class MainFrame;
 
 class VideoOptionFrame : public wxFrame
 {
+	using ParentFrame = MainFrame;
+
 	VideoOption_DType* VideoParam;
 
 	wxComboBox* combobxVideoResolution;
